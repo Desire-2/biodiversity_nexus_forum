@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Biodiversity Nexus Forum - A place to discuss and share insights about biodiversity and conservation.">
+    <meta name="keywords" content="biodiversity, conservation, forum, environment, nature">
+    <meta name="author" content="Biodiversity Nexus Forum">
+    <title>{% block title %}{% endblock %} - Biodiversity Nexus Forum</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-XXXXX-Y');
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{{ url_for('home') }}">
+            <i class="fas fa-leaf"></i> Biodiversity Nexus
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('about') }}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('contact') }}">Contact</a>
+                </li>
+                {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('account') }}">Account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% if current_user.is_authenticated %}
+            <ul class="nav justify-content-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('new_post') }}">
+                        <i class="fas fa-pencil-alt"></i> New Post
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('new_article') }}">
+                        <i class="fas fa-newspaper"></i> New Article
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('new_forum') }}">
+                        <i class="fas fa-comments"></i> New Forum
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('new_blog') }}">
+                        <i class="fas fa-blog"></i> New Blog
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('account') }}">
+                        <i class="fas fa-user"></i> Account
+                    </a>
+                </li>
+            </ul>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </div>
+    <footer class="footer mt-auto py-5 bg-dark text-white">
+        <div class="container text-center">
+            <span class="text-muted">&copy; 2023 Biodiversity Nexus Forum</span>
+            <ul class="list-inline mt-3">
+                <li class="list-inline-item">
+                    <a href="{{ url_for('about') }}" class="text-white">About Us</a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="{{ url_for('contact') }}" class="text-white">Contact</a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="{{ url_for('home') }}" class="text-white">Privacy Policy</a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="{{ url_for('home') }}" class="text-white">Terms of Service</a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="{{ url_for('home') }}" class="text-white">FAQ</a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="{{ url_for('home') }}" class="text-white">Support</a>
+                </li>
+            </ul>
+            <div class="social-icons mt-3">
+                <a href="https://facebook.com" class="text-white mx-2">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://twitter.com" class="text-white mx-2">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://instagram.com" class="text-white mx-2">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://linkedin.com" class="text-white mx-2">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://youtube.com" class="text-white mx-2">
+                    <i class="fab fa-youtube"></i>
+                </a>
+            </div>
+            <div class="newsletter mt-4">
+                <h5>Subscribe to our Newsletter</h5>
+                <form action="{{ url_for('home') }}" method="post" class="form-inline justify-content-center">
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Enter your email" name="email" required>
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">Subscribe</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="footer-info mt-4">
+                <p class="text-muted">1234 Biodiversity St, Nature City, Earth 56789</p>
+                <p class="text-muted">Phone: (123) 456-7890 | Email: info@biodiversitynexus.com</p>
+            </div>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

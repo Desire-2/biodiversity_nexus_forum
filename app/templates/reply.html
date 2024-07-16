@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Reply{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4" style="font-family: 'Georgia', serif;">Reply to Comment</h1>
+    <form action="{{ url_for('reply_comment', comment_id=comment_id) }}" method="POST">
+        <div class="form-group">
+            <label for="content">Your Reply</label>
+            <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Post Reply</button>
+    </form>
+</div>
+{% endblock %}

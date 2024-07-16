@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Blog{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4" style="font-family: 'Georgia', serif;">Blog</h1>
+    <div class="row">
+        {% for post in posts %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="{{ url_for('static', filename='uploads/' ~ post.image_file) }}" class="card-img-top" alt="Blog image">
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <p class="card-text">{{ post.summary }}</p>
+                    <a href="{{ url_for('post_detail', post_id=post.id) }}" class="btn btn-primary">Read More</a>
+                </div>
+                <div class="card-footer text-muted">
+                    <small>By {{ post.author.username }} on {{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

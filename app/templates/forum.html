@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}{{ forum.title }}{% endblock %}
+{% block content %}
+<article class="media content-section">
+    <img class="card-img-top" src="{{ url_for('static', filename='uploads/' ~ forum.file) }}" alt="forum image">
+    <div class="media-body">
+        <div class="article-metadata">
+            <a class="mr-2" href="#">{{ forum.author.username }}</a>
+            <small class="text-muted">{{ forum.date_posted.strftime('%Y-%m-%d') }}</small>
+        </div>
+        <h2 class="article-title">{{ forum.title }}</h2>
+        <p class="article-content">{{ forum.content }}</p>
+        <div class="d-flex justify-content-start mt-2">
+            <form action="#" method="POST" class="d-inline">
+                <button type="submit" class="btn btn-outline-primary btn-sm mr-2"><i class="fas fa-thumbs-up"></i> Like</button>
+            </form>
+            <form action="#" method="POST" class="d-inline">
+                <button type="submit" class="btn btn-outline-danger btn-sm mr-2"><i class="fas fa-thumbs-down"></i> Unlike</button>
+            </form>
+            <button class="btn btn-outline-secondary btn-sm"><i class="fas fa-share"></i> Share</button>
+            <button class="btn btn-outline-secondary btn-sm"><i class="fas fa-retweet"></i> Repost</button>
+        </div>
+        <p class="mt-2">Likes: {{ forum.likes }}</p>
+    </div>
+</article>
+<div class="content-section">
+    <h3>Comments</h3>
+    {% for comment in comments %}
+        <div class="media content-section">
+            <img class="rounded-circle comment-img" src="{{ url_for('static', filename='uploads/' ~ comment.author.image_file) }}" alt="">
+            <div class="media-body">
+                <div class="comment-metadata">
+                    <a class="mr-2" href="#" style="font-weight: bold;">{{ comment.author.username }}</a>
+                    <small class="text-muted">{{ comment.date_posted.strftime('%Y-%m-%d') }}</small>
+                </div>
+                <p class="comment-content mt-2" style="font-size: 1em;">{{ comment.content }}</p>
+                <div class="d-flex justify-content-start mt-2">
+                    <form action="{{ url_for('like_comment', comment_id=comment.id) }}" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-outline-primary btn-sm mr-2"><i class="fas fa-thumbs-up"></i> Like</button>
+                    </form>
+                    <form action="{{ url_for('unlike_comment', comment_id=comment.id) }}" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-outline-danger btn-sm mr-2"><i class="fas fa-thumbs-down"></i> Unlike</button>
+                    </form>
+                    <a href="{{ url_for('reply_comment', comment_id=comment.id) }}" class="btn btn-outline-secondary btn-sm"><i class="fas fa-reply"></i> Reply</a>
+                </div>
+                {% for reply in comment.replies %}
+                    <div class="media mt-4 ml-5 p-2 border rounded">
+                        <img class="rounded-circle comment-img" src="{{ url_for('static', filename='uploads/' ~ reply.author.image_file) }}" alt="Reply author image" style="width: 40px; height: 40px;">
+                        <div class="media-body ml-3">
+                            <div class="comment-metadata">
+                                <a class="mr-2" href="#" style="font-weight: bold;">{{ reply.author.username }}</a>
+                                <small class="text-muted">{{ reply.date_posted.strftime('%Y-%m-%d') }}</small>
+                            </div>
+                            <p class="comment-content mt-2" style="font-size: 0.9em;">{{ reply.content }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

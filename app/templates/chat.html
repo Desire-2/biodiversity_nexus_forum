@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Chat Room{% endblock %}
+{% block content %}
+<div class="content-section">
+    <h2>Chat Room</h2>
+    <div id="chat-box" style="height: 400px; overflow-y: scroll;"></div>
+    <input type="text" id="message" class="form-control" placeholder="Type your message here...">
+    <button id="send-button" class="btn btn-outline-info mt-2">Send</button>
+</div>
+{% endblock %}
+{% block scripts %}
+    {{ super() }}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.min.js"></script>
+    <script>
+        const socket = io();
+
+        document.getElementById('send-button').addEventListener('click', () => {
+            const message = document.getElementById('message').value;
+            socket.emit('send_message', {'message': message});
+            document.getElementById('message').value = '';
+        });
+
+        socket.on('receive_message', (data) => {
+            const chatBox = document.getElementById('chat-box');
+            chatBox.innerHTML += '<p>' + data.message + '</p>';
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+    </script>
+{% endblock %}

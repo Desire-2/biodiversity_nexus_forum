@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Reply Comment{% endblock %}
+{% block content %}
+<div class="content-section">
+    <h2>Reply to Comment</h2>
+    <div class="media content-section">
+        <img class="rounded-circle comment-img" src="{{ url_for('static', filename='uploads/' ~ comment.author.image_file) }}" alt="">
+        <div class="media-body">
+            <div class="comment-metadata">
+                <a class="mr-2" href="#">{{ comment.author.username }}</a>
+                <small class="text-muted">{{ comment.date_posted.strftime('%Y-%m-%d') }}</small>
+            </div>
+            <p class="comment-content">{{ comment.content }}</p>
+        </div>
+    </div>
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.content.label(class="form-control-label") }}
+            {{ form.content(class="form-control form-control-lg") }}
+        </div>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info") }}
+        </div>
+    </form>
+</div>
+{% endblock %}

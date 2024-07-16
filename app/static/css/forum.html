@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Forum{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4" style="font-family: 'Georgia', serif;">Forum</h1>
+    <div class="list-group">
+        {% for thread in threads %}
+        <a href="{{ url_for('thread_detail', thread_id=thread.id) }}" class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ thread.title }}</h5>
+                <small>{{ thread.date_posted.strftime('%Y-%m-%d') }}</small>
+            </div>
+            <p class="mb-1">{{ thread.summary }}</p>
+            <small>By {{ thread.author.username }}</small>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

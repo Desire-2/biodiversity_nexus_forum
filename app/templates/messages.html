@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Messages{% endblock %}
+{% block content %}
+<div class="content-section">
+    <h2>Sent Messages</h2>
+    {% for message in sent_messages %}
+        <div class="media content-section">
+            <img class="rounded-circle message-img" src="{{ url_for('static', filename='uploads/' ~ message.recipient.image_file) }}" alt="">
+            <div class="media-body">
+                <div class="message-metadata">
+                    <a class="mr-2" href="#">{{ message.recipient.username }}</a>
+                    <small class="text-muted">{{ message.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                </div>
+                <p class="message-content">{{ message.content }}</p>
+            </div>
+        </div>
+    {% endfor %}
+    <h2>Received Messages</h2>
+    {% for message in received_messages %}
+        <div class="media content-section">
+            <img class="rounded-circle message-img" src="{{ url_for('static', filename='uploads/' ~ message.sender.image_file) }}" alt="">
+            <div class="media-body">
+                <div class="message-metadata">
+                    <a class="mr-2" href="#">{{ message.sender.username }}</a>
+                    <small class="text-muted">{{ message.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                </div>
+                <p class="message-content">{{ message.content }}</p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

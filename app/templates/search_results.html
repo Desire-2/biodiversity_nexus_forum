@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Search Results{% endblock %}
+{% block content %}
+    <h2>Search Results for "{{ query }}"</h2>
+    <h3>Posts</h3>
+    {% for post in posts %}
+        <article class="media content-section">
+            <img class="rounded-circle article-img" src="{{ url_for('static', filename='uploads/' ~ post.image_file) }}" alt="">
+            <div class="media-body">
+                <div class="article-metadata">
+                    <a class="mr-2" href="#">{{ post.author.username }}</a>
+                    <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                </div>
+                <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
+                <p class="article-content">{{ post.content }}</p>
+            </div>
+        </article>
+    {% endfor %}
+    <h3>Articles</h3>
+    {% for article in articles %}
+        <article class="media content-section">
+            <img class="rounded-circle article-img" src="{{ url_for('static', filename='uploads/' ~ article.image_file) }}" alt="">
+            <div class="media-body">
+                <div class="article-metadata">
+                    <a class="mr-2" href="#">{{ article.author.username }}</a>
+                    <small class="text-muted">{{ article.date_posted.strftime('%Y-%m-%d') }}</small>
+                </div>
+                <h2><a class="article-title" href="#">{{ article.title }}</a></h2>
+                <p class="article-content">{{ article.content }}</p>
+            </div>
+        </article>
+    {% endfor %}
+    <h3>Forums</h3>
+    {% for forum in forums %}
+        <div class="content-section">
+            <h2><a class="article-title" href="#">{{ forum.title }}</a></h2>
+            <p>{{ forum.description }}</p>
+        </div>
+    {% endfor %}
+    <h3>Blogs</h3>
+    {% for blog in blogs %}
+        <article class="media content-section">
+            <img class="rounded-circle article-img" src="{{ url_for('static', filename='uploads/' ~ blog.image_file) }}" alt="">
+            <div class="media-body">
+                <div class="article-metadata">
+                    <a class="mr-2" href="#">{{ blog.author.username }}</a>
+                    <small class="text-muted">{{ blog.date_posted.strftime('%Y-%m-%d') }}</small>
+                </div>
+                <h2><a class="article-title" href="#">{{ blog.title }}</a></h2>
+                <p class="article-content">{{ blog.content }}</p>
+            </div>
+        </article>
+    {% endfor %}
+{% endblock %}

@@ -1,25 +1,160 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block content %}
+<style>
+    .jumbotron {
+        background: linear-gradient(to right, #0062E6, #33AEFF);
+        color: white;
+        padding: 3rem 1rem;
+        animation: fadeIn 2s;
+    }
+    .card {
+        transition: transform 0.2s;
+    }
+    .card:hover {
+        transform: scale(1.05);
+    }
+    .btn-outline-primary, .btn-outline-success, .btn-outline-danger, .btn-outline-info {
+        transition: background-color 0.3s, color 0.3s;
+    }
+    .btn-outline-primary:hover {
+        background-color: #0062E6;
+        color: white;
+    }
+    .btn-outline-success:hover {
+        background-color: #28a745;
+        color: white;
+    }
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+    .btn-outline-info:hover {
+        background-color: #17a2b8;
+        color: white;
+    }
+    .card-footer button {
+        margin-right: 0.5rem;
+    }
+    .fade-in {
+        animation: fadeIn 1.5s;
+    }
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    .text-center i {
+        margin-left: 0.5rem;
+    }
+    .container .section {
+        margin-top: 2rem;
+    }
+</style>
+
 <div class="jumbotron text-center">
-    <h1>Welcome to Biodiversity Nexus Forum</h1>
-    <p class="lead">A place to discuss and share insights about biodiversity and conservation.</p>
-    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">Join Now</a>
+    <h1 class="display-4">Welcome to Biodiversity Nexus Forum</h1>
+    <p class="lead">A vibrant community for discussing and sharing insights about biodiversity and conservation.</p>
+    <a href="{{ url_for('register') }}" class="btn btn-light btn-lg">Join Now</a>
 </div>
-<div class="row">
-    {% for post in posts %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
+
+<div class="container my-5">
+    <h2 class="text-center fade-in">Recent Posts</h2>
+    <div class="row">
+        {% for post in posts %}
+        <div class="col-md-4 mb-4 fade-in">
+            <div class="card h-100 shadow-sm">
+                <img class="card-img-top" src="{{ url_for('static', filename='uploads/' ~ post.file) }}" alt="Post image">
                 <div class="card-body">
                     <h5 class="card-title">{{ post.title }}</h5>
-                    <p class="card-text">{{ post.content[:100] }}...</p>
-                    <a href="{{ url_for('post', post_id=post.id) }}" class="btn btn-info">Read More</a>
+                    <p class="card-text"><small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }} by <a href="{{ url_for('user_profile', username=post.author.username) }}">{{ post.author.username }}</a></small></p>
+                    <a href="{{ url_for('post', post_id=post.id) }}" class="btn btn-outline-primary">Read More</a>
                 </div>
-                <div class="card-footer text-muted">
-                    Posted on {{ post.date_posted.strftime('%Y-%m-%d') }} by {{ post.author.username }}
+                <div class="card-footer text-center">
+                    <button class="btn btn-outline-success btn-sm"><i class="far fa-thumbs-up"></i> Like</button>
+                    <button class="btn btn-outline-danger btn-sm"><i class="far fa-thumbs-down"></i> Unlike</button>
+                    <button class="btn btn-outline-info btn-sm"><i class="fas fa-comment"></i> Comment</button>
                 </div>
             </div>
         </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
+
+    <h2 class="text-center mt-5 fade-in">Recent Articles <i class="fas fa-newspaper"></i></h2>
+    <div class="row">
+        {% for article in articles %}
+        <div class="col-md-4 mb-4 fade-in">
+            <div class="card h-100 shadow-sm">
+                <img class="card-img-top" src="{{ url_for('static', filename='uploads/' ~ article.file) }}" alt="Article image">
+                <div class="card-body">
+                    <h5 class="card-title">{{ article.title }}</h5>
+                    <p class="card-text"><small class="text-muted">{{ article.date_posted.strftime('%Y-%m-%d') }} by <a href="{{ url_for('user_profile', username=article.author.username) }}">{{ article.author.username }}</a></small></p>
+                    <a href="{{ url_for('article', article_id=article.id) }}" class="btn btn-outline-primary">Read More</a>
+                </div>
+                <div class="card-footer text-center">
+                    <button class="btn btn-outline-success btn-sm"><i class="far fa-thumbs-up"></i> Like</button>
+                    <button class="btn btn-outline-danger btn-sm"><i class="far fa-thumbs-down"></i> Unlike</button>
+                    <button class="btn btn-outline-info btn-sm"><i class="fas fa-comment"></i> Comment</button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h2 class="text-center mt-5 fade-in">Recent Forums <i class="fas fa-comments"></i></h2>
+    <div class="row">
+        {% for forum in forums %}
+        <div class="col-md-4 mb-4 fade-in">
+            <div class="card h-100 shadow-sm">
+                <img class="card-img-top" src="{{ url_for('static', filename='uploads/' ~ forum.file) }}" alt="Forum image">
+                <div class="card-body">
+                    <h5 class="card-title">{{ forum.name }}</h5>
+                    <p class="card-text"><small class="text-muted">{{ forum.date_created.strftime('%Y-%m-%d') }} by <a href="{{ url_for('user_profile', username=forum.author.username) }}">{{ forum.author.username }}</a></small></p>
+                    <a href="{{ url_for('forum', forum_id=forum.id) }}" class="btn btn-outline-primary">Read More</a>
+                </div>
+                <div class="card-footer text-center">
+                    <button class="btn btn-outline-success btn-sm"><i class="far fa-thumbs-up"></i> Like</button>
+                    <button class="btn btn-outline-danger btn-sm"><i class="far fa-thumbs-down"></i> Unlike</button>
+                    <button class="btn btn-outline-info btn-sm"><i class="fas fa-comment"></i> Comment</button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h2 class="text-center mt-5 fade-in">Recent Blogs <i class="fas fa-blog"></i></h2>
+    <div class="row">
+        {% for blog in blogs %}
+        <div class="col-md-4 mb-4 fade-in">
+            <div class="card h-100 shadow-sm">
+                <img class="card-img-top" src="{{ url_for('static', filename='uploads/' ~ blog.file) }}" alt="Blog image">
+                <div class="card-body">
+                    <h5 class="card-title">{{ blog.title }}</h5>
+                    <p class="card-text"><small class="text-muted">{{ blog.date_posted.strftime('%Y-%m-%d') }} by <a href="{{ url_for('user_profile', username=blog.creator.username) }}">{{ forum.author.username }}</a></small></p>
+                    <a href="{{ url_for('blog', blog_id=blog.id) }}" class="btn btn-outline-primary">Read More</a>
+                </div>
+                <div class="card-footer text-center">
+                    <button class="btn btn-outline-success btn-sm"><i class="far fa-thumbs-up"></i> Like</button>
+                    <button class="btn btn-outline-danger btn-sm"><i class="far fa-thumbs-down"></i> Unlike</button>
+                    <button class="btn btn-outline-info btn-sm"><i class="fas fa-comment"></i> Comment</button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="text-center my-5 fade-in">
+        <h2>Chat Room <i class="fas fa-comments"></i></h2>
+        <div class="card d-inline-block shadow-sm">
+            <div class="card-body">
+                <h4 class="card-title">Live Chat</h4>
+                <p class="card-text">Connect with others in the community.</p>
+                <a href="{{ url_for('chat') }}" class="btn btn-success">Join Chat</a>
+            </div>
+        </div>
+    </div>
 </div>
-{% endblock %}
+{% endblock content %}

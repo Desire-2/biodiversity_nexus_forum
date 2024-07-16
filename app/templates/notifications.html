@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Notifications{% endblock %}
+{% block content %}
+    <div class="content-section">
+        <h2>Notifications</h2>
+        {% for notification in notifications %}
+            <div class="alert alert-info">
+                {{ notification.message }} - <small>{{ notification.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

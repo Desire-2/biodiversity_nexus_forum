@@ -1,21 +1,92 @@
 {% extends "base.html" %}
 {% block title %}{{ post.title }}{% endblock %}
 {% block content %}
-<div class="container">
-    <h1 class="text-center">{{ post.title }}</h1>
-    <p class="text-muted">Posted on {{ post.date_posted.strftime('%Y-%m-%d') }} by {{ post.author.username }}</p>
-    <div class="card">
-        <div class="card-body">
-            <p class="card-text">{{ post.content }}</p>
+<article class="media content-section card mb-4 shadow-sm">
+    <img class="card-img-top" src="{{ url_for('static', filename='uploads/' ~ post.file) }}" alt="Post image">
+    <div class="media-body p-4">
+        <div class="article-metadata mb-2 d-flex justify-content-between align-items-center">
+            <div>
+                <a class="mr-2 text-dark font-weight-bold" href="#">{{ post.author.username }}</a>
+                <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+            </div>
         </div>
+        <h2 class="article-title mb-3">{{ post.title }}</h2>
+        <p class="article-content">{{ post.content }}</p>
     </div>
-    <div class="mt-3">
-        {% if current_user == post.author %}
-            <a href="{{ url_for('update_post', post_id=post.id) }}" class="btn btn-info">Edit</a>
-            <form method="POST" action="{{ url_for('delete_post', post_id=post.id) }}" class="d-inline">
-                <button type="submit" class="btn btn-danger">Delete</button>
-            </form>
-        {% endif %}
-    </div>
+</article>
+
+<!-- Icons below the image -->
+<div class="d-flex justify-content-start mt-2 mb-4">
+    <form action="{{ url_for('like_post', post_id=post.id) }}" method="POST" class="d-inline">
+        <button type="submit" class="btn btn-outline-primary btn-sm mr-2"><i class="fas fa-thumbs-up"></i> Like</button>
+    </form>
+    <form action="{{ url_for('unlike_post', post_id=post.id) }}" method="POST" class="d-inline">
+        <button type="submit" class="btn btn-outline-danger btn-sm mr-2"><i class="fas fa-thumbs-down"></i> Unlike</button>
+    </form>
+    <button class="btn btn-outline-secondary btn-sm mr-2"><i class="fas fa-share"></i> Share</button>
+    <button class="btn btn-outline-secondary btn-sm mr-2"><i class="fas fa-retweet"></i> Repost</button>
+    <button class="btn btn-outline-secondary btn-sm mr-2" id="comment-btn"><i class="fas fa-comment"></i> Comment</button>
 </div>
+<p class="mt-2">Likes: {{ post.likes }}</p>
+
+<!-- Comment form (initially hidden) -->
+<div class="content-section card mb-4 shadow-sm p-4" id="comment-form">
+    <h3 class="mb-3">Comments</h3>
+    <form action="{{ url_for('post_comment', post_id=post.id) }}" method="POST">
+        <div class="form-group">
+            <textarea class="form-control" name="content" rows="3" placeholder="Add a comment..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-comment"></i> Comment</button>
+    </form>
+    <hr>
+</div>
+
+<!-- Display comments -->
+<div class="content-section">
+    {% for comment in comments %}
+        <div class="media content-section mb-4 p-4 border rounded shadow-sm">
+            <img class="rounded-circle comment-img mr-3" src="{{ url_for('static', filename='uploads/' ~ comment.author.image_file) }}" alt="">
+            <div class="media-body">
+                <div class="comment-metadata d-flex justify-content-between align-items-center mb-2">
+                    <a class="text-dark font-weight-bold" href="#">{{ comment.author.username }}</a>
+                    <small class="text-muted">{{ comment.date_posted.strftime('%Y-%m-%d') }}</small>
+                </div>
+                <p class="comment-content">{{ comment.content }}</p>
+                <div class="d-flex justify-content-start mt-2">
+                    <form action="{{ url_for('like_comment', comment_id=comment.id) }}" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-outline-primary btn-sm mr-2"><i class="fas fa-thumbs-up"></i> Like</button>
+                    </form>
+                    <form action="{{ url_for('unlike_comment', comment_id=comment.id) }}" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-outline-danger btn-sm mr-2"><i class="fas fa-thumbs-down"></i> Unlike</button>
+                    </form>
+                    <a href="{{ url_for('reply_comment', comment_id=comment.id) }}" class="btn btn-outline-secondary btn-sm"><i class="fas fa-reply"></i> Reply</a>
+                </div>
+                {% for reply in comment.replies %}
+                    <div class="media mt-4 ml-5 p-3 border rounded shadow-sm">
+                        <img class="rounded-circle comment-img mr-3" src="{{ url_for('static', filename='uploads/' ~ reply.author.image_file) }}" alt="Reply author image" style="width: 40px; height: 40px;">
+                        <div class="media-body">
+                            <div class="comment-metadata d-flex justify-content-between align-items-center mb-2">
+                                <a class="text-dark font-weight-bold" href="#">{{ reply.author.username }}</a>
+                                <small class="text-muted">{{ reply.date_posted.strftime('%Y-%m-%d') }}</small>
+                            </div>
+                            <p class="comment-content">{{ reply.content }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<!-- JavaScript to handle comment form toggle with animation -->
+<script>
+    document.getElementById('comment-btn').addEventListener('click', function() {
+        var commentForm = document.getElementById('comment-form');
+        if (commentForm.style.display === "none") {
+            commentForm.style.display = "block";
+        } else {
+            commentForm.style.display = "none";
+        }
+    });
+</script>
 {% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>{{ user.username }}'s Profile</h1>
+  <h2>Articles</h2>
+  {% for article in articles %}
+    <div class="article">
+      <h3>{{ article.title }}</h3>
+      <p>{{ article.content | safe }}</p>
+    </div>
+  {% endfor %}
+  <h2>Blogs</h2>
+  {% for blog in blogs %}
+    <div class="blog">
+      <h3>{{ blog.title }}</h3>
+      <p>{{ blog.content | safe }}</p>
+    </div>
+  {% endfor %}
+  <h2>Forums</h2>
+  {% for forum in forums %}
+    <div class="forum">
+      <h3>{{ forum.title }}</h3>
+      <p>{{ forum.description | safe }}</p>
+    </div>
+  {% endfor %}
+{% endblock %}

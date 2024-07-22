@@ -173,6 +173,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-Desire Bikorimana - [Your Email](mailto:bikorimanadesire@yahoo.com)
+Desire Bikorimana - [Email](mailto:bikorimanadesire@yahoo.com)
 
-Project Link: [https://github.com/your-username/biodiversity-nexus-forum](https://github.com/Desire-2/biodiversity-nexus-forum)
+Project Link: [https://github.com/Desire-2/biodiversity-nexus-forum](https://github.com/Desire-2/biodiversity-nexus-forum)
